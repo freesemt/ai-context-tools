@@ -22,14 +22,22 @@ pip install -e C:/Users/takahashi/GitHub/ai-context-tools
 
 ## Publishing to PyPI
 
-Uses GitHub Actions — trigger manually from the Actions tab.
+Uses GitHub Actions with [PyPI Trusted Publisher](https://docs.pypi.org/trusted-publishers/) (OIDC — no API token needed).
 
-**One-time setup**: Add `PYPI_API_TOKEN` as a repository secret at  
-`https://github.com/freesemt/ai-context-tools/settings/secrets/actions`
+**One-time setup on PyPI**: Configure a Trusted Publisher at  
+`https://pypi.org/manage/account/publishing/`  
+(or for a new package not yet on PyPI, use the "pending publisher" form)
+
+Settings to enter:
+- PyPI project name: `ai-context-tools`
+- Owner: `freesemt`
+- Repository: `ai-context-tools`
+- Workflow: `upload_to_pypi.yml`
+- Environment: *(leave blank)*
 
 **To publish**: Go to Actions → "Manual Upload Python Package to PyPI" → Run workflow.
 
-The workflow builds the package, uploads to PyPI, and creates a version tag (e.g. `v0.8.2`).
+The workflow builds the package, uploads to PyPI via OIDC, and creates a version tag (e.g. `v0.8.2`).
 
 ---
 
