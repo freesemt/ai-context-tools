@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-context-tools"
+version = "0.8.2"
+description = "AI workflow utilities for the AI Context Standard"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [{ name = "freesemt" }]
+keywords = ["ai", "copilot", "jupyter", "notebook", "context"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+dependencies = []
+
+[project.scripts]
+aic-notebook = "aic_tools.notebook:main"
+
+[tool.hatch.version]
+path = "aic_tools/__init__.py"
