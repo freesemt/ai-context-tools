@@ -29,3 +29,6 @@ aic-notebook = "aic_tools.notebook:main"
 
 [tool.hatch.version]
 path = "aic_tools/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["aic_tools"]
