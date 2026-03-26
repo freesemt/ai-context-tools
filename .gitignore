@@ -23,3 +23,6 @@ htmlcov/
 # Editor
 .vscode/
 *.swp
+
+# AI Context Standard — machine-local file
+.github/vscode-version.txt
