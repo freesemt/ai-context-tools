@@ -22,20 +22,14 @@ pip install -e C:/Users/takahashi/GitHub/ai-context-tools
 
 ## Publishing to PyPI
 
-**Prerequisites** (one-time setup):
-```bash
-pip install build twine
-```
+Uses GitHub Actions — trigger manually from the Actions tab.
 
-**Build and upload**:
-```bash
-cd C:/Users/takahashi/GitHub/ai-context-tools
-python -m build
-python -m twine upload dist/*
-```
+**One-time setup**: Add `PYPI_API_TOKEN` as a repository secret at  
+`https://github.com/freesemt/ai-context-tools/settings/secrets/actions`
 
-Twine will prompt for your PyPI credentials (or use a `~/.pypirc` token).
-After upload, verify at https://pypi.org/project/ai-context-tools/
+**To publish**: Go to Actions → "Manual Upload Python Package to PyPI" → Run workflow.
+
+The workflow builds the package, uploads to PyPI, and creates a version tag (e.g. `v0.8.2`).
 
 ---
 
