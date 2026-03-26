@@ -19,6 +19,11 @@ classifiers = [
 ]
 dependencies = []
 
+[project.urls]
+Homepage = "https://github.com/freesemt/ai-context-tools"
+Repository = "https://github.com/freesemt/ai-context-tools"
+Issues = "https://github.com/freesemt/ai-context-tools/issues"
+
 [project.scripts]
 aic-notebook = "aic_tools.notebook:main"
 
