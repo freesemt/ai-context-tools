@@ -5,4 +5,4 @@ Tools:
     aic_tools.notebook  — Read notebook cell outputs from .ipynb JSON
 """
 
-__version__ = "0.8.2"
+__version__ = "0.9.0"
