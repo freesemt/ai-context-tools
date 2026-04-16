@@ -87,10 +87,12 @@ Package version tracks the AI Context Standard version that introduced each tool
 
 | Tool | Language | Role |
 |------|----------|------|
-| [vscode-version-recorder](https://github.com/freesemt/vscode-version-recorder) | TypeScript / VS Code extension | Records VS Code version to `.github/vscode-version.txt` |
+| [ai-context-vscode](https://github.com/freesemt/ai-context-vscode) | TypeScript / VS Code extension | Live notebook cell output reading + VS Code version recording (supersedes `vscode-version-recorder`) |
 | **ai-context-tools** (this package) | Python | AI workflow utilities (notebook output reading, etc.) |
 
-Both tools support the [AI Context Standard](https://github.com/freesemt/ai-context-standard).
+All tools support the [AI Context Standard](https://github.com/freesemt/ai-context-standard).
+
+> **VS Code users**: The [ai-context-vscode](https://github.com/freesemt/ai-context-vscode) extension reads live cell outputs from the VS Code document model — no save required. This Python package serves as the fallback for terminal-only sessions or non-VS Code editors.
 
 ---
 
