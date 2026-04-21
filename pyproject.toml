@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ai-context-tools"
-version = "0.8.3"
+version = "0.8.4"
 description = "AI workflow utilities for the AI Context Standard"
 readme = "README.md"
 license = { text = "MIT" }
@@ -19,6 +19,10 @@ classifiers = [
 ]
 dependencies = []
 
+[project.optional-dependencies]
+# For aic_tools.runcell — execute notebook cells via nbclient.
+run = ["nbclient>=0.7", "nbformat>=5.0", "ipykernel>=6.0"]
+
 [project.urls]
 Homepage = "https://github.com/freesemt/ai-context-tools"
 Repository = "https://github.com/freesemt/ai-context-tools"
@@ -26,6 +30,7 @@ Issues = "https://github.com/freesemt/ai-context-tools/issues"
 
 [project.scripts]
 aic-notebook = "aic_tools.notebook:main"
+aic-runcell = "aic_tools.runcell:main"
 
 [tool.hatch.version]
 path = "aic_tools/__init__.py"

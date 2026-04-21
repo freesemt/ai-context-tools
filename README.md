@@ -2,7 +2,7 @@
 
 AI workflow utilities for the [AI Context Standard](https://github.com/freesemt/ai-context-standard).
 
-**Version**: tracks AI Context Standard version (currently `0.8.2`)
+**Version**: tracks AI Context Standard version (currently `0.8.4`)
 
 ---
 
@@ -73,6 +73,54 @@ from aic_tools.notebook import read_cell_output
 read_cell_output("experiments/08d.ipynb", 14)
 read_cell_output("experiments/08d.ipynb", 14, max_lines=0)  # all lines
 ```
+
+---
+
+### `aic_tools.runcell` — Execute a notebook cell with fresh outputs
+
+Executes cells `1..N` of a notebook via `nbclient` and prints the target
+cell's outputs to the terminal with no size limit. The companion to
+`aic_tools.notebook` (which reads stale outputs from disk).
+
+**When to use** (routing rule for AI assistants):
+- Use `aic_tools.notebook` when the cell's last-saved output is enough.
+- Use `aic_tools.runcell` when you need *fresh* output — e.g. after editing
+  code that the cell depends on, or when verifying a one-line fix without
+  re-running the entire notebook in the GUI.
+
+**Install execution dependencies** (`nbclient`, `nbformat`, `ipykernel`):
+```bash
+pip install ai-context-tools[run]
+```
+
+**CLI**:
+```bash
+python -m aic_tools.runcell <notebook.ipynb> <cell_number> \
+    [--kernel NAME] [--timeout SEC] [--write] [--max-lines N]
+
+# Examples:
+python -m aic_tools.runcell experiments/08d.ipynb 14
+python -m aic_tools.runcell experiments/08d.ipynb 14 --write    # save outputs
+python -m aic_tools.runcell experiments/08d.ipynb 14 --kernel python3
+```
+
+**Entry point** (after install):
+```bash
+aic-runcell experiments/08d.ipynb 14
+```
+
+**Python API**:
+```python
+from aic_tools.runcell import run_up_to_cell
+cell = run_up_to_cell("experiments/08d.ipynb", 14)
+```
+
+**Behaviour**:
+- Executes cells 1 through `cell_number` in order (markdown cells are skipped
+  by nbclient automatically) so the kernel state is correctly built up.
+- Read-only by default — the `.ipynb` is not modified unless `--write` is
+  passed.
+- Exit code `1` on cell error, file-not-found, or invalid arguments.
 
 ---
 
