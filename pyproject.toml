@@ -20,7 +20,7 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
-# For aic_tools.runcell — execute notebook cells via nbclient.
+# For aic_tools.runcell  Eexecute notebook cells via nbclient.
 run = ["nbclient>=0.7", "nbformat>=5.0", "ipykernel>=6.0"]
 
 [project.urls]
@@ -31,6 +31,7 @@ Issues = "https://github.com/freesemt/ai-context-tools/issues"
 [project.scripts]
 aic-notebook = "aic_tools.notebook:main"
 aic-runcell = "aic_tools.runcell:main"
+aic-widget-snapshot = "aic_tools.widget_snapshot:main"
 
 [tool.hatch.version]
 path = "aic_tools/__init__.py"
