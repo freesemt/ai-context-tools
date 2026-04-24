@@ -76,6 +76,45 @@ read_cell_output("experiments/08d.ipynb", 14, max_lines=0)  # all lines
 
 ---
 
+### `aic_tools.nb_status` — Read notebook execution status
+
+Reports which cells have been executed (and in what order) by reading the
+`execution_count` field stored in the `.ipynb` file.
+
+**When to use** (routing rule for AI assistants):
+
+> ⚠️ **disk vs. live kernel**: execution counts are read from the saved
+> `.ipynb` file. If the file was externally rewritten while open in VS Code
+> (e.g. via `json.dump`), VS Code reloads from disk and loses unsaved counts.
+> In that case, the kernel variables section of `copilot_getNotebookSummary`
+> is the authoritative live source — a variable being present there proves the
+> cell ran, regardless of what the execution count says.
+>
+> Use `aic-nb-status` for quick offline checks or to cross-check after a
+> suspected external file write.
+
+**CLI**:
+```bash
+python -m aic_tools.nb_status <notebook.ipynb>
+python -m aic_tools.nb_status <notebook.ipynb> --executed-only
+python -m aic_tools.nb_status <notebook.ipynb> --json
+```
+
+**Entry point** (after install):
+```bash
+aic-nb-status experiments/13h.ipynb
+aic-nb-status experiments/13h.ipynb --executed-only
+```
+
+**Python API**:
+```python
+from aic_tools.nb_status import get_execution_status
+rows = get_execution_status("experiments/13h.ipynb")
+# Returns list of dicts: cell_number, cell_id, cell_type, execution_count, first_line
+```
+
+---
+
 ### `aic_tools.runcell` — Execute a notebook cell with fresh outputs
 
 Executes cells `1..N` of a notebook via `nbclient` and prints the target

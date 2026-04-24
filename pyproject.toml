@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ai-context-tools"
-version = "0.8.5"
+version = "0.8.6"
 description = "AI workflow utilities for the AI Context Standard"
 readme = "README.md"
 license = { text = "MIT" }
@@ -30,6 +30,7 @@ Issues = "https://github.com/freesemt/ai-context-tools/issues"
 
 [project.scripts]
 aic-notebook = "aic_tools.notebook:main"
+aic-nb-status = "aic_tools.nb_status:main"
 aic-runcell = "aic_tools.runcell:main"
 aic-widget-snapshot = "aic_tools.widget_snapshot:main"
 
