@@ -6,6 +6,7 @@ Tools:
     aic_tools.nb_status        — Read notebook execution status (which cells ran)
     aic_tools.runcell          — Execute a notebook cell and print fresh outputs
     aic_tools.widget_snapshot  — Surface ipywidget-rendered figures via sidecar PNGs
+    aic_tools.marimo_session   — Read marimo notebook cell outputs from session cache
 """
 
-__version__ = "0.8.6"
+__version__ = "0.8.7"
