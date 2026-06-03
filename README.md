@@ -163,6 +163,46 @@ cell = run_up_to_cell("experiments/08d.ipynb", 14)
 
 ---
 
+### `aic_tools.marimo_session` — Read marimo notebook cell outputs
+
+Reads the marimo session cache written to `__marimo__/session/<notebook_name>.py.json`
+after each execution. Works without a running server — reads from disk.
+
+**When to use** (routing rule for AI assistants):
+
+| Output type | Tool |
+|---|---|
+| `console` (stdout/stderr from `print()`) | `aic_tools.marimo_session` — always readable as text |
+| `text/plain`, `text/markdown` | `aic_tools.marimo_session` |
+| `text/html` with embedded image | size summary only; use `screenshot_page()` to view |
+| Live UI (sliders, buttons) | browser tools — `screenshot_page()`, `run_playwright_code()` |
+
+**CLI**:
+```bash
+python -m aic_tools.marimo_session <notebook.py>              # list all cells
+python -m aic_tools.marimo_session <notebook.py> <cell_N>     # read cell N (1-based)
+python -m aic_tools.marimo_session <notebook.py> <cell_N> 50  # limit to 50 lines
+```
+
+**Entry point** (after install):
+```bash
+aic-marimo-session experiments/23a_basic_workflow.py
+aic-marimo-session experiments/23a_basic_workflow.py 8
+```
+
+**Python API**:
+```python
+from aic_tools.marimo_session import list_cells, read_cell_output
+list_cells("experiments/23a_basic_workflow.py")
+read_cell_output("experiments/23a_basic_workflow.py", 8)
+read_cell_output("experiments/23a_basic_workflow.py", 8, max_lines=50)
+```
+
+**Note**: `marimo mcp` does not exist in marimo 0.23.8. This tool is the
+primary offline alternative for AI-readable marimo cell output.
+
+---
+
 ## Versioning
 
 Package version tracks the AI Context Standard version that introduced each tool.
