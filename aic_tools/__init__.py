@@ -7,6 +7,7 @@ Tools:
     aic_tools.runcell          — Execute a notebook cell and print fresh outputs
     aic_tools.widget_snapshot  — Surface ipywidget-rendered figures via sidecar PNGs
     aic_tools.marimo_session   — Read marimo notebook cell outputs from session cache
+    aic_tools.edit_lines       — Line-range based file editing (safe for duplicates)
 """
 
-__version__ = "0.8.7"
+__version__ = "0.8.8"

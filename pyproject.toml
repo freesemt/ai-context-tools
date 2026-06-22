@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ai-context-tools"
-version = "0.8.7"
+version = "0.8.8"
 description = "AI workflow utilities for the AI Context Standard"
 readme = "README.md"
 license = { text = "MIT" }
@@ -34,6 +34,7 @@ aic-nb-status = "aic_tools.nb_status:main"
 aic-runcell = "aic_tools.runcell:main"
 aic-widget-snapshot = "aic_tools.widget_snapshot:main"
 aic-marimo-session = "aic_tools.marimo_session:main"
+aic-edit-lines = "aic_tools.edit_lines:main"
 
 [tool.hatch.version]
 path = "aic_tools/__init__.py"

@@ -2,7 +2,7 @@
 
 AI workflow utilities for the [AI Context Standard](https://github.com/freesemt/ai-context-standard).
 
-**Version**: tracks AI Context Standard version (currently `0.8.4`)
+**Version**: tracks AI Context Standard version (currently `0.8.8`)
 
 ---
 
@@ -200,6 +200,73 @@ read_cell_output("experiments/23a_basic_workflow.py", 8, max_lines=50)
 
 **Note**: `marimo mcp` does not exist in marimo 0.23.8. This tool is the
 primary offline alternative for AI-readable marimo cell output.
+
+---
+
+### `aic_tools.edit_lines` — Line-range based file editing
+
+Solves the "duplicate content" problem where `replace_string_in_file` fails
+with "Multiple matches found" errors. Uses line numbers instead of string
+matching, making edits precise and unambiguous.
+
+**When to use** (routing rule for AI assistants):
+- HTML/XML files with duplicate sections (common in generated/templated files)
+- Any file where `replace_string_in_file` returns "Multiple matches found"
+- Large structural changes where line-based editing is clearer
+- When you need to replace exact line ranges (e.g., "replace lines 124-358")
+
+**What problem does this solve?**
+
+VS Code's built-in `replace_string_in_file` requires exact string matching.
+If your file has duplicate sections (common in HTML templates, config files,
+generated documentation), the tool fails with "Multiple matches found".
+
+This tool uses line numbers instead, so you can target the exact section:
+
+```bash
+# Replace lines 124-358 in index.html with content from replacement.html
+python -m aic_tools.edit_lines index.html 124 358 replacement.html
+```
+
+**CLI**:
+```bash
+python -m aic_tools.edit_lines <file> <start_line> <end_line> <content_file>
+python -m aic_tools.edit_lines <file> <start_line> <end_line> --delete
+python -m aic_tools.edit_lines <file> <start_line> <end_line> --stdin
+
+# Examples:
+python -m aic_tools.edit_lines index.html 124 358 replacement.html
+python -m aic_tools.edit_lines config.json 10 20 --delete
+echo "new content" | python -m aic_tools.edit_lines file.txt 5 5 --stdin
+python -m aic_tools.edit_lines file.txt 1 10 new.txt --no-backup
+```
+
+**Entry point** (after install):
+```bash
+aic-edit-lines index.html 124 358 replacement.html
+```
+
+**Python API**:
+```python
+from aic_tools.edit_lines import edit_lines, delete_lines
+
+# Replace lines 10-20 with new content
+edit_lines("index.html", 10, 20, "new content here")
+
+# Replace from file
+edit_lines("index.html", 10, 20, content_file="replacement.html")
+
+# Delete lines 10-20
+delete_lines("index.html", 10, 20)
+
+# Edit without backup
+edit_lines("index.html", 10, 20, "new content", backup=False)
+```
+
+**Safety features**:
+- Creates `.bak` backup by default (use `--no-backup` to skip)
+- Validates line numbers before editing
+- Atomic write (writes to temp file, then renames — no partial writes)
 
 ---
 
