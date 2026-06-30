@@ -270,6 +270,57 @@ edit_lines("index.html", 10, 20, "new content", backup=False)
 
 ---
 
+### `aic_tools.pdf` — Extract text from PDF files
+
+Provides text extraction from PDF documents for AI conversations.
+
+**When to use** (routing rule for AI assistants):
+- Reading PDF papers, reports, documentation
+- Extracting content from JOSS review PDFs (line numbers appear at end of each line)
+- Searching PDF text across multiple pages
+- When you need text-based PDF content (not just viewing)
+
+**CLI**:
+```bash
+python -m aic_tools.pdf <file.pdf>               # Extract all pages
+python -m aic_tools.pdf <file.pdf> --page 2      # Extract single page
+python -m aic_tools.pdf <file.pdf> --page 2 --max-lines 50
+
+# Examples:
+python -m aic_tools.pdf paper.pdf
+python -m aic_tools.pdf paper.pdf --page 1
+python -m aic_tools.pdf paper.pdf --page 2 --max-lines 20
+```
+
+**Entry point** (after install):
+```bash
+aic-pdf paper.pdf --page 2
+```
+
+**Python API**:
+```python
+from aic_tools.pdf import extract_text
+
+# Extract all pages
+text = extract_text("paper.pdf")
+
+# Extract specific page (1-indexed)
+text = extract_text("paper.pdf", page=2)
+```
+
+**Requirements**:
+```bash
+pip install ai-context-tools[pdf]
+# or
+pip install pypdf
+```
+
+**JOSS review note**: For JOSS PDFs with line numbering, extract the full page
+text — line numbers appear at the end of each line in the extracted text
+(e.g., "Software Design34"), making them easily parsable.
+
+---
+
 ## Versioning
 
 Package version tracks the AI Context Standard version that introduced each tool.

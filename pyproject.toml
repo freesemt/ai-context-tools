@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ai-context-tools"
-version = "0.8.8"
+version = "0.8.9"
 description = "AI workflow utilities for the AI Context Standard"
 readme = "README.md"
 license = { text = "MIT" }
@@ -21,8 +21,8 @@ dependencies = []
 
 [project.optional-dependencies]
 # For aic_tools.runcell  Eexecute notebook cells via nbclient.
-run = ["nbclient>=0.7", "nbformat>=5.0", "ipykernel>=6.0"]
-
+run = ["nbclient>=0.7", "nbformat>=5.0", "ipykernel>=6.0"]# For aic_tools.pdf - Extract text from PDF files.
+pdf = ["pypdf>=3.0"]
 [project.urls]
 Homepage = "https://github.com/freesemt/ai-context-tools"
 Repository = "https://github.com/freesemt/ai-context-tools"
@@ -35,6 +35,7 @@ aic-runcell = "aic_tools.runcell:main"
 aic-widget-snapshot = "aic_tools.widget_snapshot:main"
 aic-marimo-session = "aic_tools.marimo_session:main"
 aic-edit-lines = "aic_tools.edit_lines:main"
+aic-pdf = "aic_tools.pdf:main"
 
 [tool.hatch.version]
 path = "aic_tools/__init__.py"

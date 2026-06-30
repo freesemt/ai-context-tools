@@ -8,6 +8,7 @@ Tools:
     aic_tools.widget_snapshot  — Surface ipywidget-rendered figures via sidecar PNGs
     aic_tools.marimo_session   — Read marimo notebook cell outputs from session cache
     aic_tools.edit_lines       — Line-range based file editing (safe for duplicates)
+    aic_tools.pdf              — Extract text from PDF files
 """
 
-__version__ = "0.8.8"
+__version__ = "0.8.9"
