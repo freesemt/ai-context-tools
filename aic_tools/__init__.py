@@ -11,4 +11,4 @@ Tools:
     aic_tools.pdf              — Extract text from PDF files
 """
 
-__version__ = "0.8.9"
+__version__ = "0.9.0"

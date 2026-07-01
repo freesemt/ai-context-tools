@@ -272,13 +272,28 @@ edit_lines("index.html", 10, 20, "new content", backup=False)
 
 ### `aic_tools.pdf` — Extract text from PDF files
 
-Provides text extraction from PDF documents for AI conversations.
+Automatically selects the best PDF library for your document:
+- **pymupdf** (recommended): best quality, handles Japanese & scanned PDFs
+- **pypdf** (fallback): lighter, sufficient for English text PDFs
 
 **When to use** (routing rule for AI assistants):
-- Reading PDF papers, reports, documentation
-- Extracting content from JOSS review PDFs (line numbers appear at end of each line)
-- Searching PDF text across multiple pages
-- When you need text-based PDF content (not just viewing)
+Just call this tool — it automatically handles:
+- Japanese PDFs (uses pymupdf if available)
+- English PDFs (pypdf fallback is sufficient)
+- Scanned PDFs (pymupdf preferred)
+- Encoding issues (automatic selection)
+
+You don't need to check PDF type or choose which library to use.
+
+**Install PDF dependencies**:
+```bash
+# Recommended (both libraries for full compatibility):
+pip install ai-context-tools[pdf]
+
+# Or install individually:
+pip install pymupdf  # recommended
+pip install pypdf    # fallback
+```
 
 **CLI**:
 ```bash

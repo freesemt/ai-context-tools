@@ -1,5 +1,5 @@
 """
-aic_tools.pdf — Extract text from PDF files.
+aic_tools.pdf — Extract text from PDF files with automatic library selection.
 
 Usage (CLI):
     python -m aic_tools.pdf <file.pdf>               # Extract all pages
@@ -16,13 +16,18 @@ Arguments:
     --page N     Page number to extract (1-indexed). If omitted, extracts all pages.
     --max-lines  Limit output to N lines (default: unlimited)
 
-Requirements:
-    pip install pypdf
+Requirements (auto-selected):
+    - Recommended: pip install pymupdf  (best for Japanese/scanned PDFs)
+    - Fallback:    pip install pypdf    (sufficient for English PDFs)
 
 Routing rule for AI assistants:
-    Use this tool when you need to read PDF content in AI conversations.
-    For JOSS review PDFs with line numbers, extract the full text and parse
-    line numbers from text (they appear at the end of each line).
+    Just call this tool. It automatically handles:
+    - Japanese PDFs (uses pymupdf if available)
+    - English PDFs (pypdf fallback is sufficient)
+    - Scanned PDFs (pymupdf preferred)
+    - Encoding issues (automatic selection)
+    
+    You don't need to check PDF type or choose which library to use.
 """
 
 import sys
@@ -31,7 +36,10 @@ from pathlib import Path
 
 def extract_text(pdf_path, page=None):
     """
-    Extract text from PDF.
+    Extract text from PDF using the best available library.
+    
+    Tries pymupdf first (best quality, Japanese support), 
+    falls back to pypdf (lighter, English-friendly).
     
     Args:
         pdf_path: Path to PDF file (str or Path)
@@ -42,32 +50,91 @@ def extract_text(pdf_path, page=None):
     
     Raises:
         FileNotFoundError: If PDF file doesn't exist
-        ImportError: If pypdf is not installed
+        ImportError: If neither pymupdf nor pypdf is installed
     """
-    try:
-        from pypdf import PdfReader
-    except ImportError:
-        raise ImportError(
-            "pypdf is required for PDF extraction. "
-            "Install with: pip install pypdf"
-        )
-    
     path = Path(pdf_path)
     if not path.exists():
         raise FileNotFoundError(f"PDF not found: {pdf_path}")
     
-    reader = PdfReader(str(path))
+    # Try pymupdf first (best quality)
+    try:
+        import fitz  # pymupdf
+        return _extract_with_pymupdf(path, page)
+    except ImportError:
+        pass  # Fall back to pypdf
     
-    if page is not None:
-        if page < 1 or page > len(reader.pages):
-            raise ValueError(
-                f"Page {page} out of range. "
-                f"PDF has {len(reader.pages)} pages."
+    # Fall back to pypdf
+    try:
+        from pypdf import PdfReader
+        return _extract_with_pypdf(path, page)
+    except ImportError:
+        raise ImportError(
+            "PDF extraction requires either pymupdf or pypdf.\n"
+            "Recommended: pip install pymupdf  (best for Japanese/scanned PDFs)\n"
+            "Fallback:    pip install pypdf    (sufficient for English PDFs)"
+        )
+
+
+def _extract_with_pymupdf(path, page=None):
+    """Extract using pymupdf (fitz)"""
+    import fitz
+    
+    doc = fitz.open(str(path))
+    
+    try:
+        if page is not None:
+            if page < 1 or page > len(doc):
+                raise ValueError(
+                    f"Page {page} out of range. "
+                    f"PDF has {len(doc)} pages."
+                )
+            return doc[page - 1].get_text()
+        
+        # Extract all pages
+        return '\n'.join([p.get_text() for p in doc])
+    finally:
+        doc.close()
+
+
+def _extract_with_pypdf(path, page=None):
+    """Extract using pypdf (fallback)"""
+    from pypdf import PdfReader
+    import io
+    
+    # Capture encoding warnings
+    old_stderr = sys.stderr
+    stderr_capture = io.StringIO()
+    sys.stderr = stderr_capture
+    
+    try:
+        reader = PdfReader(str(path))
+        
+        if page is not None:
+            if page < 1 or page > len(reader.pages):
+                raise ValueError(
+                    f"Page {page} out of range. "
+                    f"PDF has {len(reader.pages)} pages."
+                )
+            text = reader.pages[page - 1].extract_text()
+        else:
+            # Extract all pages
+            text = '\n'.join([p.extract_text() for p in reader.pages])
+        
+        # Check for encoding warnings
+        warnings = stderr_capture.getvalue()
+        if warnings and ('encoding' in warnings.lower() or 'not implemented' in warnings.lower()):
+            # Restore stderr and print warning
+            sys.stderr = old_stderr
+            print(
+                "\nWARNING: PDF encoding issue detected.\n"
+                "For better quality (especially Japanese/scanned PDFs), install:\n"
+                "  pip install pymupdf\n",
+                file=sys.stderr
             )
-        return reader.pages[page - 1].extract_text()
-    
-    # Extract all pages
-    return '\n'.join([p.extract_text() for p in reader.pages])
+        
+        return text
+    finally:
+        sys.stderr = old_stderr
 
 
 def main():
