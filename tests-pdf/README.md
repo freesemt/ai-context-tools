@@ -6,23 +6,22 @@ Manual test scripts for PDF text extraction functionality using real academic pa
 
 | Script | Purpose | Test Data |
 |--------|---------|-----------|
-| `test_aic_pdf_english.py` | Test `_extract_with_pypdf` on English PDF | `molass-review/reference_papers/2025, Furukawa.pdf` |
+| `test_aic_pdf_english.py` | Test `_extract_with_pypdf` on English PDF | `2025, Furukawa.pdf` in the English papers folder (see below) |
 | `test_aic_pdf_pypdf.py` | Test `_extract_with_pypdf` on Japanese PDF | `humanomics/docs/references/2019, Yasuo, Honjo.pdf` |
-| `test_english_pdfs.py` | Compare pypdf vs pymupdf on multiple English papers | `molass-review/reference_papers/` (4 papers) |
+| `test_english_pdfs.py` | Compare pypdf vs pymupdf on multiple English papers | the English papers folder (4 papers) |
 | `test_pdf_comparison.py` | Compare pypdf vs pymupdf on Japanese paper | `humanomics/docs/references/2019, Yasuo, Honjo.pdf` |
 | `test_pypdf_warning.py` | Detect encoding warnings from pypdf on Japanese PDF | `humanomics/docs/references/2019, Yasuo, Honjo.pdf` |
 
 ## Requirements
 
-These tests require **sibling repositories** to be cloned:
+The papers are copyrighted and not in git. The English ones are looked up in the folder given by the environment variable `AIC_TEST_PAPERS_DIR`; if it is not set, the former location `../molass-review/reference_papers/` (sibling repo, now retired) is tried. The Japanese test paper is read from a sibling repository:
 ```
 GitHub/
 ├── ai-context-tools/    ← this repo
-├── molass-review/       ← for English test papers
 └── humanomics/          ← for Japanese test papers
 ```
 
-If repositories are in different locations, tests will fail with "file not found" errors.
+If a paper is not found, the English scripts skip with a message; the Japanese ones fail with "file not found".
 
 ## Running Tests
 

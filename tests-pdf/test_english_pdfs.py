@@ -1,10 +1,13 @@
 """英語学術論文PDFの比較テスト — pypdf vs pymupdf"""
 import sys
 import io
+import os
 from pathlib import Path
 
-# Relative path to sibling repo
-papers_dir = Path(__file__).parent.parent.parent / 'molass-review' / 'reference_papers'
+# Folder with the English test papers (not in git, copyrighted): set AIC_TEST_PAPERS_DIR,
+# otherwise the former location in the sibling repo molass-review is tried
+papers_dir = Path(os.environ.get('AIC_TEST_PAPERS_DIR',
+                                 Path(__file__).parent.parent.parent / 'molass-review' / 'reference_papers'))
 
 # テスト対象のPDF（新旧）
 test_pdfs = [
